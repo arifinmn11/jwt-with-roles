@@ -1,24 +1,17 @@
-package com.arifinmn.projectapi.entities;
+package com.arifinmn.projectapi.models.requests;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "rooms")
-public class Rooms {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RoomRequest {
+
     private Integer id;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "Name is mandatory")
     private String room;
 
-    @Value("false")
-    private Boolean isActive;
+    private Boolean active = false ;
 
     public Integer getId() {
         return id;
@@ -37,10 +30,10 @@ public class Rooms {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 }

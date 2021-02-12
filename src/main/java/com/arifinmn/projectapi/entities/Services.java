@@ -1,6 +1,6 @@
 package com.arifinmn.projectapi.entities;
 
-import com.arifinmn.projectapi.models.EService;
+import com.arifinmn.projectapi.models.enums.EService;
 
 import javax.persistence.*;
 

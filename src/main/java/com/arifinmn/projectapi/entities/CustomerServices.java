@@ -1,8 +1,5 @@
 package com.arifinmn.projectapi.entities;
 
-import com.arifinmn.projectapi.models.ERole;
-import com.arifinmn.projectapi.models.EService;
-
 import javax.persistence.*;
 
 @Entity

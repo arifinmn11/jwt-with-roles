@@ -1,6 +1,6 @@
 package com.arifinmn.projectapi.entities;
 
-import com.arifinmn.projectapi.models.ERole;
+import com.arifinmn.projectapi.models.enums.ERole;
 
 import javax.persistence.*;
 

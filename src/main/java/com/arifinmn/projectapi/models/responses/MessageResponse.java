@@ -1,4 +1,4 @@
-package com.arifinmn.projectapi.payloads.responses;
+package com.arifinmn.projectapi.models.responses;
 
 public class MessageResponse {
     private String message;

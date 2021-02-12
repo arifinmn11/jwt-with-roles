@@ -2,7 +2,7 @@ package com.arifinmn.projectapi.securities.jwt;
 
 import java.util.Date;
 
-import com.arifinmn.projectapi.services.UserDetailsImpl;
+import com.arifinmn.projectapi.services.impl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 public class JwtUtils {

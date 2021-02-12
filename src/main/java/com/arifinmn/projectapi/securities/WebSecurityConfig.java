@@ -1,7 +1,8 @@
 package com.arifinmn.projectapi.securities;
 
+import com.arifinmn.projectapi.securities.AuthTokenFilter;
 import com.arifinmn.projectapi.securities.jwt.AuthEntryPointJwt;
-import com.arifinmn.projectapi.services.UserDetailsServiceImpl;
+import com.arifinmn.projectapi.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/rooms/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
 

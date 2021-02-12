@@ -1,7 +1,8 @@
-package com.arifinmn.projectapi.services;
+package com.arifinmn.projectapi.services.impl;
 
 import com.arifinmn.projectapi.entities.Users;
 import com.arifinmn.projectapi.repositories.UserRepository;
+import com.arifinmn.projectapi.services.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

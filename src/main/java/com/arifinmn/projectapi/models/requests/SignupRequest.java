@@ -1,4 +1,4 @@
-package com.arifinmn.projectapi.payloads.requests;
+package com.arifinmn.projectapi.models.requests;
 
 import java.util.Set;
 

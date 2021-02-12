@@ -1,4 +1,4 @@
-package com.arifinmn.projectapi.services;
+package com.arifinmn.projectapi.services.impl;
 
 import java.util.Collection;
 import java.util.List;
