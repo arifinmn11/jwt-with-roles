@@ -1,4 +1,4 @@
-insert into roles(name)
-values  ('ROLE_USER'),
-        ('ROLE_MODERATOR'),
-        ('ROLE_ADMIN');
+insert into roles(id, name)
+values  (1,'ROLE_USER'),
+        (2,'ROLE_MODERATOR'),
+        (3,'ROLE_ADMIN');
