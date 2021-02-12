@@ -2,16 +2,20 @@ package com.arifinmn.projectapi.controllers;
 
 import com.arifinmn.projectapi.entities.Roles;
 import com.arifinmn.projectapi.entities.Users;
+import com.arifinmn.projectapi.exceptions.EntityNotFoundException;
+import com.arifinmn.projectapi.exceptions.UnauthorizedException;
 import com.arifinmn.projectapi.models.enums.ERole;
 import com.arifinmn.projectapi.models.requests.LoginRequest;
 import com.arifinmn.projectapi.models.requests.SignupRequest;
 import com.arifinmn.projectapi.models.responses.JwtResponse;
 import com.arifinmn.projectapi.models.responses.MessageResponse;
+import com.arifinmn.projectapi.models.responses.ResponseMessage;
 import com.arifinmn.projectapi.repositories.RoleRepository;
 import com.arifinmn.projectapi.repositories.UserRepository;
 import com.arifinmn.projectapi.securities.jwt.JwtUtils;
 import com.arifinmn.projectapi.services.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +51,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseMessage<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -60,7 +64,7 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        return ResponseMessage.success(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
@@ -68,17 +72,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseMessage<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            throw new EntityNotFoundException();
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            throw new EntityNotFoundException();
         }
 
         // Create new user's account
@@ -119,18 +119,18 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseMessage.success(new MessageResponse("User registered successfully!"));
     }
 
 
     @GetMapping("/me")
-    public ResponseEntity<?> getUserByToken(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseMessage<?> getUserByToken(@RequestHeader("Authorization") String bearerToken) {
         String token = jwtUtils.splitTokenFromBearer(bearerToken);
         String username = jwtUtils.getUserNameFromJwtToken(token);
 
         Optional<Users> entity = userRepository.findByUsername(username);
 
-        return ResponseEntity.ok(entity);
+        return ResponseMessage.success(entity);
     }
 
 }
