@@ -56,6 +56,8 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return handleBindingResult(ex.getBindingResult(), status);
     }
 
+
+
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return handleBindingResult(ex, status);
@@ -89,6 +91,5 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         logger.error("unknown exception" + e);
         return handleException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }

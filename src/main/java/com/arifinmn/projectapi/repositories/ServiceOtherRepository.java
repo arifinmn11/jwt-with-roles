@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServiceOptionalRepository extends JpaRepository<Services, String> {
+public interface ServiceOtherRepository extends JpaRepository<Services, String> {
     @Query("SELECT e FROM Services e WHERE e.service = ?1")
     Services searchByService(@Param("service") EService service);
 }

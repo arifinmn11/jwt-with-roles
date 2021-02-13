@@ -3,6 +3,7 @@ package com.arifinmn.projectapi.models.requests;
 import com.arifinmn.projectapi.entities.Services;
 import com.arifinmn.projectapi.entities.Status;
 import com.arifinmn.projectapi.entities.Users;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;

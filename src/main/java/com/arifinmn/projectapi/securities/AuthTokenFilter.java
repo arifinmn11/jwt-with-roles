@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.arifinmn.projectapi.exceptions.UnauthorizedException;
 import com.arifinmn.projectapi.securities.jwt.JwtUtils;
 import com.arifinmn.projectapi.services.impl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
