@@ -52,4 +52,14 @@ public class Tickets {
     public void setUsers(Users users) {
         this.users = users;
     }
+
+    @Override
+    public String toString() {
+        return "Tickets{" +
+                "id=" + id +
+                ", service=" + service +
+                ", status=" + status +
+                ", users=" + users +
+                '}';
+    }
 }

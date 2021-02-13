@@ -8,10 +8,10 @@ import com.arifinmn.projectapi.repositories.RoomRepository;
 import com.arifinmn.projectapi.services.RoomService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -27,11 +27,11 @@ public class RoomController {
     @Autowired
     ModelMapper modelMapper;
 
-//    @GetMapping()
-//    public ResponseEntity<?> findRooms(@RequestBody Rooms request) {
-//        Rooms entity = service.save(request);
-//        return ResponseEntity.ok(entity);
-//    }
+    @GetMapping()
+    public ResponseMessage<?> getRooms() {
+        List<Rooms> entities= service.findAll();
+        return ResponseMessage.success(entities);
+    }
 
     @PostMapping("/create")
     public ResponseMessage<Rooms> createRoom(@RequestBody @Valid RoomRequest request) {

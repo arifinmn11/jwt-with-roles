@@ -2,10 +2,12 @@ package com.arifinmn.projectapi.controllers;
 
 import com.arifinmn.projectapi.entities.*;
 import com.arifinmn.projectapi.exceptions.EntityNotFoundException;
+import com.arifinmn.projectapi.models.PageList;
 import com.arifinmn.projectapi.models.enums.EService;
 import com.arifinmn.projectapi.models.enums.EStatus;
 import com.arifinmn.projectapi.models.requests.TicketRequest;
 import com.arifinmn.projectapi.models.responses.TicketResponse;
+import com.arifinmn.projectapi.models.searchs.TicketSearch;
 import com.arifinmn.projectapi.repositories.ServiceOtherRepository;
 import com.arifinmn.projectapi.models.responses.ResponseMessage;
 import com.arifinmn.projectapi.repositories.StatusOtherRepository;
@@ -14,11 +16,12 @@ import com.arifinmn.projectapi.securities.jwt.JwtUtils;
 import com.arifinmn.projectapi.services.TicketService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -42,6 +45,27 @@ public class TicketController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @GetMapping
+    public ResponseMessage<PageList<?>> getTickets(TicketSearch search) {
+        Tickets request = modelMapper.map(search, Tickets.class);
+
+        Page<Tickets> entityPage = service.findAll(request, search.getPage(),search.getSize(), search.getSort());
+        List<Tickets> entityList = entityPage.toList();
+
+        List<Tickets> elements = entityList.stream()
+                .map(model -> modelMapper.map(model, Tickets.class))
+                .collect(Collectors.toList());
+
+        PageList<Tickets> entities = new PageList<>(
+                elements,
+                entityPage.getNumber(),
+                entityPage.getSize(),
+                entityPage.getTotalElements()
+        );
+
+        return ResponseMessage.success(entities);
+    }
 
     @PostMapping("/create")
     public ResponseMessage<Tickets> createRoom(

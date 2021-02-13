@@ -60,16 +60,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/rooms/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/rooms/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/error/**").permitAll()
                 .antMatchers("/api/schedules/**").permitAll()
+                .antMatchers("/api/tickets/**").permitAll()
 
                 //TICKETS AUTH
-                .antMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
 
                 //ScheduleService AUTH
 //                .antMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")

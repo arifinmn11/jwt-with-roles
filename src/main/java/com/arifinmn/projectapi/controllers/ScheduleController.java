@@ -6,26 +6,29 @@ import com.arifinmn.projectapi.entities.Status;
 import com.arifinmn.projectapi.entities.Tickets;
 import com.arifinmn.projectapi.exceptions.ApplicationExceptions;
 import com.arifinmn.projectapi.exceptions.EntityNotFoundException;
+import com.arifinmn.projectapi.models.PageList;
 import com.arifinmn.projectapi.models.enums.EStatus;
 import com.arifinmn.projectapi.models.requests.ScheduleRequest;
 import com.arifinmn.projectapi.models.responses.ResponseMessage;
+import com.arifinmn.projectapi.models.searchs.ScheduleSearch;
 import com.arifinmn.projectapi.repositories.*;
 import com.arifinmn.projectapi.services.RoomService;
 import com.arifinmn.projectapi.services.ScheduleService;
 import com.arifinmn.projectapi.services.TicketService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/schedules")
-public class ScheduleServiceController {
-
-
+public class ScheduleController {
     @Autowired
     ScheduleService service;
 
@@ -40,6 +43,31 @@ public class ScheduleServiceController {
 
     @Autowired
     ScheduleOtherRepository scheduleOtherRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+
+    @GetMapping()
+    public ResponseMessage<PageList<?>> getSchedules(ScheduleSearch search) {
+        Schedules request = modelMapper.map(search, Schedules.class);
+
+        Page<Schedules> entityPage = service.findAll(request, search.getPage(),search.getSize(), search.getSort());
+        List<Schedules> entityList = entityPage.toList();
+
+        List<Schedules> elements = entityList.stream()
+                .map(model -> modelMapper.map(model, Schedules.class))
+                .collect(Collectors.toList());
+
+        PageList<Schedules> entities = new PageList<>(
+                elements,
+                entityPage.getNumber(),
+                entityPage.getSize(),
+                entityPage.getTotalElements()
+        );
+
+        return ResponseMessage.success(entities);
+    }
 
     @PostMapping("/create")
     @Transactional
@@ -93,12 +121,4 @@ public class ScheduleServiceController {
         return ResponseMessage.success(entity);
     }
 
-//    @PutMapping("/{id}/update")
-//    public ResponseMessage<?> updateScheduleById(@PathVariable Integer id) {
-//        Schedules entity = service.findById(id);
-//        if (entity == null) {
-//            throw new EntityNotFoundException();
-//        }
-//        return ResponseMessage.success(scheduleOtherRepository.existByTicketId(id));
-//    }
 }
