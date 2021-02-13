@@ -15,7 +15,10 @@ import com.arifinmn.projectapi.services.ScheduleService;
 import com.arifinmn.projectapi.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -38,9 +41,9 @@ public class ScheduleServiceController {
     @Autowired
     ScheduleOtherRepository scheduleOtherRepository;
 
-
     @PostMapping("/create")
-    public ResponseMessage<?> createSchedule(@RequestBody ScheduleRequest request) {
+    @Transactional
+    public ResponseMessage<?> createSchedule(@RequestBody ScheduleRequest request)  {
 
         Integer ticketId = request.getTicket_id();
         Integer roomId = request.getRoom_id();
@@ -58,11 +61,16 @@ public class ScheduleServiceController {
             throw new EntityNotFoundException();
         }
 
+        Schedules entity = new Schedules(entityTicket, entityRoom);
+        if (scheduleOtherRepository.existByTicketId(ticketId)) {
+            throw new ApplicationExceptions(HttpStatus.UNPROCESSABLE_ENTITY, "Schedules have already existed for this ticket!");
+        }
+
         entityTicket.setStatus(entityStatus);
         entityTicket = ticketService.save(entityTicket);
 
-        Schedules entity = new Schedules(entityTicket, entityRoom);
         entity = service.save(entity);
+
 
         return ResponseMessage.success(entity);
     }
@@ -85,14 +93,12 @@ public class ScheduleServiceController {
         return ResponseMessage.success(entity);
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseMessage<?> updateScheduleById(@PathVariable Integer id) {
+//    @PutMapping("/{id}/update")
+//    public ResponseMessage<?> updateScheduleById(@PathVariable Integer id) {
 //        Schedules entity = service.findById(id);
 //        if (entity == null) {
 //            throw new EntityNotFoundException();
 //        }
-
-
-        return ResponseMessage.success(scheduleOtherRepository.searchByTicketId(id));
-    }
+//        return ResponseMessage.success(scheduleOtherRepository.existByTicketId(id));
+//    }
 }
