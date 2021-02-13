@@ -5,6 +5,7 @@ import com.arifinmn.projectapi.models.responses.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,10 +87,17 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return handleException(e.getStatus(), e.getMessage());
     }
 
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<Object>  handleNullException(InvalidDataAccessApiUsageException e) {
+        return handleException(HttpStatus.BAD_REQUEST, "The given request must not be null!");
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object>  handleUnknownException(Exception e) {
         logger.error("unknown exception" + e);
         return handleException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 }

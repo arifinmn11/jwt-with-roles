@@ -49,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -64,12 +63,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/rooms/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/error/**").permitAll()
+                .antMatchers("/api/schedules/**").permitAll()
 
                 //TICKETS AUTH
-                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
+
+                //ScheduleService AUTH
+//                .antMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .antMatchers(HttpMethod.POST, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers("/api/schedules/**").permitAll()
 
                 .anyRequest().authenticated();
 

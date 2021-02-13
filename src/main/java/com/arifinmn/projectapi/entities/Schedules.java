@@ -3,8 +3,8 @@ package com.arifinmn.projectapi.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customer_services")
-public class CustomerServices {
+@Table(name = "schedules")
+public class Schedules {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,6 +17,13 @@ public class CustomerServices {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Rooms room;
 
+    public Schedules() {
+    }
+
+    public Schedules(Tickets ticket, Rooms room) {
+        this.ticket = ticket;
+        this.room = room;
+    }
 
     public Integer getId() {
         return id;
