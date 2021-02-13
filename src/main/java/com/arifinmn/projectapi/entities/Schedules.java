@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "schedules")
-public class Schedules {
+public class Schedules extends AbstractEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

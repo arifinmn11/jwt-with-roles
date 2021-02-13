@@ -16,7 +16,6 @@ public class Roles {
     private ERole name;
 
     public Roles() {
-
     }
 
     public Roles(ERole name) {
@@ -38,4 +37,6 @@ public class Roles {
     public void setName(ERole name) {
         this.name = name;
     }
+
+
 }
