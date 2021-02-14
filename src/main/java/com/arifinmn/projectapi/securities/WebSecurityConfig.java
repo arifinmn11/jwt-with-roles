@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -55,6 +56,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -63,21 +69,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/rooms/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/error/**").permitAll()
-                .antMatchers("/api/schedules/**").permitAll()
-                .antMatchers("/api/tickets/**").permitAll()
+//                .antMatchers("/api/schedules/**").permitAll()
+//                .antMatchers("/api/tickets/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                 //TICKETS AUTH
-//                .antMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/tickets/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/tickets/**").hasAnyAuthority("ROLE_ADMIN")
 
                 //ScheduleService AUTH
-//                .antMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                .antMatchers(HttpMethod.POST, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
-//                .antMatchers("/api/schedules/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/schedules/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/schedules/**").permitAll()
 
                 .anyRequest().authenticated();
 
